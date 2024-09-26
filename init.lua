@@ -574,6 +574,8 @@ require('lazy').setup({
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         -- javascript = { { "prettierd", "prettier" } },
+        typescript = { 'eslint', 'tsserver', stop_after_first = true },
+        typescriptreact = { 'eslint', 'tsserver', stop_after_first = true },
       },
     },
   },
@@ -827,3 +829,10 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+-- tsserver is fucking stupid
+vim.lsp.buf.format {
+  filter = function(client)
+    return client.name ~= 'tsserver'
+  end,
+}
