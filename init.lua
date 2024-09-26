@@ -836,3 +836,43 @@ vim.lsp.buf.format {
     return client.name ~= 'tsserver'
   end,
 }
+
+-- -- Choose template on file creation
+vim.api.nvim_create_autocmd('BufNewFile', {
+  pattern = '/home/rayb/comp-programming/**.cpp',
+  callback = function()
+    local template_name = vim.fn.input 'Template name: '
+    vim.cmd('0r ~/comp-programming/templates/' .. template_name .. '.cpp')
+    vim.cmd '$'
+    vim.cmd '-2'
+  end,
+})
+
+-- Insert code snippet
+function InsertSnippet()
+  local snippet_name = vim.fn.input 'Snippet name: '
+  vim.cmd('r ~/comp-programming/snippets/' .. snippet_name .. '.hpp')
+end
+vim.api.nvim_create_user_command('INS', InsertSnippet, {})
+
+-- Compile and Run
+function WriteCompileRun()
+  vim.cmd 'w'
+  vim.cmd('silent !cd ' .. vim.fn.expand '%:p:h')
+  vim.cmd('!g++ -std=c++20 -DLOCAL -Wall -Wextra -Wno-sign-conversion -O2 ' .. vim.fn.expand '%:p')
+  vim.cmd 'terminal ./a.out'
+end
+vim.api.nvim_create_user_command('WCR', WriteCompileRun, {})
+
+-- Run
+function Run()
+  vim.cmd('silent !cd ' .. vim.fn.expand '%:p:h')
+  vim.cmd 'terminal ./a.out'
+end
+vim.api.nvim_create_user_command('R', Run, {})
+
+-- Start terminal in insert mode
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = '*',
+  command = 'startinsert',
+})
