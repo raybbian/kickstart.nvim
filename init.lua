@@ -494,6 +494,19 @@ require('lazy').setup({
         -- tsserver = {},
         --
 
+        tinymist = {
+          --- todo: these configuration from lspconfig maybe broken
+          single_file_support = true,
+          root_dir = function()
+            return vim.fn.getcwd()
+          end,
+          --- See [Tinymist Server Configuration](https://github.com/Myriad-Dreamin/tinymist/blob/main/Configuration.md) for references.
+          settings = {
+            exportPdf = 'onType',
+            formatterMode = 'typstyle',
+          },
+        },
+
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -877,3 +890,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
   pattern = '*',
   command = 'startinsert',
 })
+
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
