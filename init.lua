@@ -499,6 +499,19 @@ require('lazy').setup({
         -- tsserver = {},
         --
 
+        tinymist = {
+          --- todo: these configuration from lspconfig maybe broken
+          single_file_support = true,
+          root_dir = function()
+            return vim.fn.getcwd()
+          end,
+          --- See [Tinymist Server Configuration](https://github.com/Myriad-Dreamin/tinymist/blob/main/Configuration.md) for references.
+          settings = {
+            exportPdf = 'onType',
+            formatterMode = 'typstyle',
+          },
+        },
+
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -565,7 +578,7 @@ require('lazy').setup({
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = {}
         return {
           timeout_ms = 500,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
@@ -579,6 +592,9 @@ require('lazy').setup({
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         -- javascript = { { "prettierd", "prettier" } },
+        javascript = { 'prettierd' },
+        typescript = { 'prettierd' },
+        typescriptreact = { 'prettierd' },
       },
     },
   },
@@ -833,6 +849,13 @@ require('lazy').setup({
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
+-- tsserver is fucking stupid
+vim.lsp.buf.format {
+  filter = function(client)
+    return client.name ~= 'tsserver'
+  end,
+}
+
 -- -- Choose template on file creation
 vim.api.nvim_create_autocmd('BufNewFile', {
   pattern = '/home/rayb/comp-programming/**.cpp',
@@ -872,3 +895,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
   pattern = '*',
   command = 'startinsert',
 })
+
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
