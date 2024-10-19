@@ -879,9 +879,17 @@ function WriteCompileRun()
   vim.cmd 'w'
   vim.cmd('silent !cd ' .. vim.fn.expand '%:p:h')
   vim.cmd('!g++ -std=c++20 -DLOCAL -Wall -Wextra -Wno-sign-conversion -O2 ' .. vim.fn.expand '%:p')
-  vim.cmd 'terminal ./a.out < in'
+  vim.cmd 'terminal ./a.out'
 end
 vim.api.nvim_create_user_command('WCR', WriteCompileRun, {})
+
+function WriteCompileRunFile()
+  vim.cmd 'w'
+  vim.cmd('silent !cd ' .. vim.fn.expand '%:p:h')
+  vim.cmd('!g++ -std=c++20 -DLOCAL -Wall -Wextra -Wno-sign-conversion -O2 ' .. vim.fn.expand '%:p')
+  vim.cmd 'terminal ./a.out < in'
+end
+vim.api.nvim_create_user_command('WCRF', WriteCompileRunFile, {})
 
 -- Run
 function Run()
